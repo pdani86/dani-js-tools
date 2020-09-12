@@ -1,0 +1,10 @@
+.label
+{
+	display: inline-block;
+	min-width: 100px;
+}
+
+.input
+{
+	min-width: 150px;
+}
