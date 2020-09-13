@@ -1,3 +1,10 @@
+.calculator-container
+{
+	display: inline-block;
+	vertical-align: top;
+	margin: 10px;
+}
+
 .label
 {
 	display: inline-block;

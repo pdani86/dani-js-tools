@@ -1,9 +1,12 @@
 
 _THERMODYN_CONSTANTS = {
-    R: 8.31446261815324
+    R: 8.31446261815324,
+	StefanBoltzmann: 5.670373e-8
 }
 
-var adiabaticCalculator = {
+var calculators = {};
+
+calculators.adiabaticCalculator = {
 	title: "Adiabatic Process Calculator",
 	inputs: {
 		f: {value: 5},
@@ -38,9 +41,9 @@ var adiabaticCalculator = {
 		out.n = inp.p0*inp.V0/(inp.T0*_THERMODYN_CONSTANTS.R);
 		return out;
 	}
-}
+};
 
-var isothermalCalculator = {
+calculators.isothermalCalculator = {
 	title: "Isothermal Process Calculator",
 	inputs: {
 		f: {value: 5},
@@ -63,4 +66,23 @@ var isothermalCalculator = {
 		out.W = -1*out.n*_THERMODYN_CONSTANTS.R*inp.T0 * Math.log(inp.V1/inp.V0);
 		return out;
 	}
-}
+};
+
+calculators.stefanBoltzmannCalculator = {
+	title: "Black Body Radiation Calculator",
+	inputs: {
+		e: {value: 0.03},
+		T: {value: 300},
+		A: {value: 0.01},
+		Ta: {value: 0}
+	},
+	outputs: {
+		P: {}
+	},
+	calc: function(inp) {
+		var out = {};
+		out.P = inp.A * inp.e * _THERMODYN_CONSTANTS.StefanBoltzmann * 
+		    (Math.pow(inp.T, 4) - Math.pow(inp.Ta, 4));
+		return out;
+	}
+};

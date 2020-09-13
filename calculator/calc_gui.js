@@ -19,6 +19,7 @@ this.createGui = function(calculatorDesc) {
 	var outputs = calculatorDesc.outputs;
 	var calcFunc = calculatorDesc.calc;
 	var container = document.createElement("div");
+	container.className = "calculator-container";
 	var input_container = document.createElement("div");
 	var output_container = document.createElement("div");
 	var footer_container = document.createElement("div");
