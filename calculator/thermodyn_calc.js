@@ -4,7 +4,8 @@ _THERMODYN_CONSTANTS = {
 	StefanBoltzmann: 5.670373e-8
 }
 
-var calculators = {};
+if(typeof(calculators)==="undefined")
+	calculators = {};
 
 calculators.adiabaticCalculator = {
 	title: "Adiabatic Process Calculator",

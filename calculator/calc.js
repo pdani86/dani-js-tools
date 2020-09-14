@@ -20,5 +20,8 @@ function init() {
 	document.body.appendChild(calculator_gui.createGui(calculators.adiabaticCalculator));
 	document.body.appendChild(calculator_gui.createGui(calculators.isothermalCalculator));
 	document.body.appendChild(calculator_gui.createGui(calculators.stefanBoltzmannCalculator));
+	document.body.appendChild(calculator_gui.createGui(calculators.TsoilkovskyCalculator));
+	document.body.appendChild(calculator_gui.createGui(calculators.gravityAccCalculator));
+	
 }
 	
