@@ -1,9 +1,19 @@
-
+﻿
 var _ORBMECH_CONSTANTS = {
 	g_std: 9.80665,
 	G: 6.67430e-11,
 	M_earth: 5.972e24
 };
+
+var _STD_GRAV_PARAMS = [
+	{name: "Earth", value: 3.986004418e14},
+	{name: "Moon", value: 4.9048695e12},
+	{name: "Sun", value: 1.32712440018e20},
+	{name: "Mars", value: 4.282837e13},
+	{name: "Kerbin", value: 3.5316e12},
+	{name: "Mun", value: 6.5138398e10},
+	{name: "Kerbol", value: 1.1723328e18}
+];
 
 if(typeof(calculators)==="undefined")
 	calculators = {};
@@ -29,7 +39,7 @@ calculators.gravityAccCalculator = {
 	title: "Gravitational Acceleration Calculator",
 	inputs: {
 		M: {value: _ORBMECH_CONSTANTS.M_earth},
-		d: {value: 6371000}
+		r: {value: 6371000}
 	},
 	outputs: {
 		g: {}
@@ -37,6 +47,50 @@ calculators.gravityAccCalculator = {
 	calc: function(inp) {
 		var out = {};
 		out.g = _ORBMECH_CONSTANTS.G * inp.M / (inp.d * inp.d);
+		return out;
+	}
+};
+
+calculators.circularOrbitVelocityCalculator = {
+	title: "Circular Orbit Velocity",
+	inputs: {
+		mu: {value: _ORBMECH_CONSTANTS.M_earth * _ORBMECH_CONSTANTS.G, label: "μ (GM)"},
+		r: {value: 6371000}
+	},
+	outputs: {
+		v_orb: {},
+		v_esc: {}
+	},
+	calc: function(inp) {
+		var out = {};
+		out.v_orb = Math.sqrt(inp.mu  / inp.r);
+		out.v_esc = Math.sqrt(2) * out.v_orb;
+		return out;
+	}
+};
+
+calculators.orbitDeltaV = {
+	title: "delta-v",
+	inputs: {
+		mu: {value: _ORBMECH_CONSTANTS.M_earth * _ORBMECH_CONSTANTS.G, label: "μ (GM)"},
+		r1: {value: 6371000},
+		v1: {value: 0},
+		r2: {value: 6771000},
+		v2: {value: 0},
+	},
+	outputs: {
+		Epot_1: {},
+		Epot_2: {},
+		Ediff: {},
+		deltaV: {}
+	},
+	calc: function(inp) {
+		var out = {};
+		// specific orbital energy
+		out.Epot_1 = inp.v1*inp.v1/2-inp.mu/inp.r1;
+		out.Epot_2 = inp.v2*inp.v2/2-inp.mu/inp.r2;
+		out.Ediff = out.Epot_2 - out.Epot_1;
+		out.deltaV = Math.sqrt(2*out.Ediff);
 		return out;
 	}
 };

@@ -7,7 +7,10 @@ function createInput(inputId, inputDesc) {
 	var input = document.createElement("input");
 	input.className = "input";
 	input.setAttribute("type","text");
-	label.innerText = inputId+": ";
+	var labelText;
+	if("label" in inputDesc) labelText = inputDesc.label;
+	else labelText = inputId;
+	label.innerText = labelText+": ";
 	if("value" in inputDesc) input.setAttribute("value", inputDesc.value);
 	div.appendChild(label);
 	div.appendChild(input);
@@ -58,7 +61,7 @@ this.createGui = function(calculatorDesc) {
 		var result = calcFunc(inputValMap);
 		for(var key in result) {
 			if(key in outputMap) {
-				outputMap[key].value = result[key];
+				outputMap[key].value = result[key].toExponential(6);
 			}
 		}
 	};

@@ -22,6 +22,9 @@ function init() {
 	document.body.appendChild(calculator_gui.createGui(calculators.stefanBoltzmannCalculator));
 	document.body.appendChild(calculator_gui.createGui(calculators.TsoilkovskyCalculator));
 	document.body.appendChild(calculator_gui.createGui(calculators.gravityAccCalculator));
+	document.body.appendChild(calculator_gui.createGui(calculators.circularOrbitVelocityCalculator));
+	document.body.appendChild(calculator_gui.createGui(calculators.orbitDeltaV));
+	
 	
 }
 	
