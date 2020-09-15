@@ -2,6 +2,7 @@ function CalculatorGUI() {
 
 function createOptionList(inputElem, options) {
 	var sel_elem = document.createElement("select");
+	sel_elem.className = "calc-gui-value-selector input";
 	for(var key in options) {
 			var optDesc = options[key];
 			var optElem = document.createElement("option");
@@ -10,10 +11,13 @@ function createOptionList(inputElem, options) {
 			sel_elem.appendChild(optElem);
 		}
 	sel_elem.selectedIndex = -1;
-	sel_elem.addEventListener("change", function() {
+	//sel_elem.addEventListener("change", function() {
+		sel_elem.addEventListener("input", function() {
 		if(sel_elem.selectedIndex == -1) return;
+		inputElem.style.display = "";
 		var selectedOption = sel_elem.selectedOptions[0];
 		inputElem.value = parseFloat(selectedOption.value).toExponential(6);
+		if(sel_elem.parentNode) sel_elem.parentNode.removeChild(sel_elem);
 	});
 	return sel_elem;
 }
@@ -37,7 +41,10 @@ function createInput(inputId, inputDesc) {
 		input.data = {"optionsElem": options_elem};
 		input.addEventListener("click", function(e) {
 			if(!e.ctrlKey) return;
-			document.body.appendChild(input.data.optionsElem);
+			input.data.optionsElem.selectedIndex = -1;
+			input.parentNode.insertBefore(input.data.optionsElem, input);
+			input.style.display = "none";
+			//document.body.appendChild(input.data.optionsElem);
 		});
 	}
 	

@@ -18,7 +18,7 @@ var _STD_GRAV_PARAMS = {
 var _CEL_BODY_RADIUS = {
 	earth: {name: "Earth", value: 6371e3},
 	sun: {name: "Sun", value: 695700e3},
-	moon: {name: "moon", value: 1737.4e3},
+	moon: {name: "Moon", value: 1737.4e3},
 	kerbin: {name: "Kerbin", value: 600e3},
 	mun: {name: "Mun", value: 200e3}
 };
@@ -47,7 +47,7 @@ calculators.gravityAccCalculator = {
 	title: "Gravitational Acceleration Calculator",
 	inputs: {
 		M: {value: _ORBMECH_CONSTANTS.M_earth},
-		r: {value: 6371000}
+		r: {value: 6371000, options: _CEL_BODY_RADIUS}
 	},
 	outputs: {
 		g: {}
@@ -62,8 +62,8 @@ calculators.gravityAccCalculator = {
 calculators.circularOrbitVelocityCalculator = {
 	title: "Circular Orbit Velocity",
 	inputs: {
-		mu: {value: _ORBMECH_CONSTANTS.M_earth * _ORBMECH_CONSTANTS.G, label: "μ (GM)"},
-		r: {value: 6371000}
+		mu: {value: _ORBMECH_CONSTANTS.M_earth * _ORBMECH_CONSTANTS.G, label: "μ (GM)", options: _STD_GRAV_PARAMS},
+		r: {value: 6371000, options: _CEL_BODY_RADIUS}
 	},
 	outputs: {
 		v_orb: {},
@@ -81,10 +81,10 @@ calculators.orbitDeltaV = {
 	title: "delta-v",
 	inputs: {
 		mu: {value: _ORBMECH_CONSTANTS.M_earth * _ORBMECH_CONSTANTS.G, label: "μ (GM)", options: _STD_GRAV_PARAMS},
-		r1: {value: 6371000},
+		r1: {value: 6371000, options: _CEL_BODY_RADIUS},
 		v1: {value: 0},
-		r2: {value: 6771000},
-		v2: {value: 0},
+		r2: {value: 6771000, options: _CEL_BODY_RADIUS},
+		v2: {value: 0}
 	},
 	outputs: {
 		Epot_1: {},
