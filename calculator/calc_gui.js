@@ -39,13 +39,14 @@ function createInput(inputId, inputDesc) {
 		var options_elem = createOptionList(input, inputDesc.options);
 		input.className = input.className + " has-value-list";
 		input.data = {"optionsElem": options_elem};
-		input.addEventListener("click", function(e) {
-			if(!e.ctrlKey) return;
+		var onShowSelector = function(e) {
 			input.data.optionsElem.selectedIndex = -1;
 			input.parentNode.insertBefore(input.data.optionsElem, input);
 			input.style.display = "none";
 			//document.body.appendChild(input.data.optionsElem);
-		});
+		};
+		input.addEventListener("click", function(e) {if(!e.ctrlKey) return; onShowSelector(e);});
+		input.addEventListener("dblclick", onShowSelector);
 	}
 	
 	div.appendChild(label);

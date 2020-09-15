@@ -17,6 +17,8 @@ var _STD_GRAV_PARAMS = {
 
 var _CEL_BODY_RADIUS = {
 	earth: {name: "Earth", value: 6371e3},
+	earth_iss: {name: "Earth - ISS", value: 6771e3},
+	earth_geo: {name: "Earth - GEO", value: 42164e3},
 	sun: {name: "Sun", value: 695700e3},
 	moon: {name: "Moon", value: 1737.4e3},
 	kerbin: {name: "Kerbin", value: 600e3},
@@ -54,7 +56,7 @@ calculators.gravityAccCalculator = {
 	},
 	calc: function(inp) {
 		var out = {};
-		out.g = _ORBMECH_CONSTANTS.G * inp.M / (inp.d * inp.d);
+		out.g = _ORBMECH_CONSTANTS.G * inp.M / (inp.r * inp.r);
 		return out;
 	}
 };
