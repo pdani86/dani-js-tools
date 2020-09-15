@@ -15,3 +15,8 @@
 {
 	min-width: 150px;
 }
+
+.input.has-value-list
+{
+	background-color: #eee;
+}

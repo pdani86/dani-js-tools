@@ -80,7 +80,7 @@ calculators.circularOrbitVelocityCalculator = {
 calculators.orbitDeltaV = {
 	title: "delta-v",
 	inputs: {
-		mu: {value: _ORBMECH_CONSTANTS.M_earth * _ORBMECH_CONSTANTS.G, label: "μ (GM)"},
+		mu: {value: _ORBMECH_CONSTANTS.M_earth * _ORBMECH_CONSTANTS.G, label: "μ (GM)", options: _STD_GRAV_PARAMS},
 		r1: {value: 6371000},
 		v1: {value: 0},
 		r2: {value: 6771000},

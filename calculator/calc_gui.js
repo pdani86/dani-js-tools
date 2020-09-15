@@ -1,5 +1,23 @@
 function CalculatorGUI() {
 
+function createOptionList(inputElem, options) {
+	var sel_elem = document.createElement("select");
+	for(var key in options) {
+			var optDesc = options[key];
+			var optElem = document.createElement("option");
+			optElem.setAttribute("value", optDesc.value);
+			optElem.innerText = optDesc.name;
+			sel_elem.appendChild(optElem);
+		}
+	sel_elem.selectedIndex = -1;
+	sel_elem.addEventListener("change", function() {
+		if(sel_elem.selectedIndex == -1) return;
+		var selectedOption = sel_elem.selectedOptions[0];
+		inputElem.value = parseFloat(selectedOption.value).toExponential(6);
+	});
+	return sel_elem;
+}
+
 function createInput(inputId, inputDesc) {
 	var div = document.createElement("div");
 	var label = document.createElement("span");
@@ -12,6 +30,17 @@ function createInput(inputId, inputDesc) {
 	else labelText = inputId;
 	label.innerText = labelText+": ";
 	if("value" in inputDesc) input.setAttribute("value", inputDesc.value);
+	
+	if("options" in inputDesc) {
+		var options_elem = createOptionList(input, inputDesc.options);
+		input.className = input.className + " has-value-list";
+		input.data = {"optionsElem": options_elem};
+		input.addEventListener("click", function(e) {
+			if(!e.ctrlKey) return;
+			document.body.appendChild(input.data.optionsElem);
+		});
+	}
+	
 	div.appendChild(label);
 	div.appendChild(input);
 	return [div, input];
