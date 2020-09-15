@@ -5,15 +5,23 @@ var _ORBMECH_CONSTANTS = {
 	M_earth: 5.972e24
 };
 
-var _STD_GRAV_PARAMS = [
-	{name: "Earth", value: 3.986004418e14},
-	{name: "Moon", value: 4.9048695e12},
-	{name: "Sun", value: 1.32712440018e20},
-	{name: "Mars", value: 4.282837e13},
-	{name: "Kerbin", value: 3.5316e12},
-	{name: "Mun", value: 6.5138398e10},
-	{name: "Kerbol", value: 1.1723328e18}
-];
+var _STD_GRAV_PARAMS = {
+	earth: {name: "Earth", value: 3.986004418e14},
+	moon: {name: "Moon", value: 4.9048695e12},
+	sun: {name: "Sun", value: 1.32712440018e20},
+	mars: {name: "Mars", value: 4.282837e13},
+	kerbin: {name: "Kerbin", value: 3.5316e12},
+	mun: {name: "Mun", value: 6.5138398e10},
+	kerbol: {name: "Kerbol", value: 1.1723328e18}
+};
+
+var _CEL_BODY_RADIUS = {
+	earth: {name: "Earth", value: 6371e3},
+	sun: {name: "Sun", value: 695700e3},
+	moon: {name: "moon", value: 1737.4e3},
+	kerbin: {name: "Kerbin", value: 600e3},
+	mun: {name: "Mun", value: 200e3}
+};
 
 if(typeof(calculators)==="undefined")
 	calculators = {};
