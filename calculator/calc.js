@@ -24,6 +24,7 @@ function init() {
 	document.body.appendChild(calculator_gui.createGui(calculators.gravityAccCalculator));
 	document.body.appendChild(calculator_gui.createGui(calculators.circularOrbitVelocityCalculator));
 	document.body.appendChild(calculator_gui.createGui(calculators.orbitDeltaV));
+	document.body.appendChild(calculator_gui.createGui(calculators.fuelMassForPayloadWithDeltaVCost));
 	
 	
 }

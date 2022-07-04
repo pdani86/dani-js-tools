@@ -104,3 +104,24 @@ calculators.orbitDeltaV = {
 		return out;
 	}
 };
+
+calculators.fuelMassForPayloadWithDeltaVCost = {
+	title: "Fuel mass for payload with Delta-V cost",
+	inputs: {
+		deltaV: {value: 11.2e3},
+		finalMass: {value: 1e3},
+		effectiveExhaustVel: {value: 3e3}
+	},
+	outputs: {
+		fuelMass: {},
+		totalMass: {},
+		totalMassToFinalMassRatio: {}
+	},
+	calc: function(inp) {
+		var out = {};
+		out.totalMass = inp.finalMass * Math.pow(Math.E, inp.deltaV / inp.effectiveExhaustVel);
+		out.fuelMass = out.totalMass - inp.finalMass;
+		out.totalMassToFinalMassRatio = out.totalMass / inp.finalMass;
+		return out;
+	}
+};
