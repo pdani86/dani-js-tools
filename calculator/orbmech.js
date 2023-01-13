@@ -25,6 +25,10 @@ var _CEL_BODY_RADIUS = {
 	mun: {name: "Mun", value: 200e3}
 };
 
+var _CEL_BODY_DISTANCE = {
+	mun: {name: "Mun", value: 12e6}
+};
+
 if(typeof(calculators)==="undefined")
 	calculators = {};
 
@@ -122,6 +126,56 @@ calculators.fuelMassForPayloadWithDeltaVCost = {
 		out.totalMass = inp.finalMass * Math.pow(Math.E, inp.deltaV / inp.effectiveExhaustVel);
 		out.fuelMass = out.totalMass - inp.finalMass;
 		out.totalMassToFinalMassRatio = out.totalMass / inp.finalMass;
+		return out;
+	}
+};
+
+
+calculators.hohmann = {
+	title: "hohmann",
+	inputs: {
+		mu: {value: _STD_GRAV_PARAMS.kerbin.value, label: "μ (GM)", options: _STD_GRAV_PARAMS},
+		r0: {value: _CEL_BODY_RADIUS.kerbin.value + 100e3, options: _CEL_BODY_RADIUS},
+		//v0: {value: 0},
+		r1: {value: _CEL_BODY_DISTANCE.mun.value, options: _CEL_BODY_DISTANCE},
+	},
+	outputs: {
+		v1: {},
+		dv1: {},
+		v2: {},
+		dv2: {},
+		deltaV: {},
+		t1: {}
+	},
+	
+	/*
+	getMeanAnomaly: function(trueAnomaly, eccentricity) {
+		var f = trueAnomaly;
+		var cosF = Math.cos(f);
+		var sinF = Math.sin(f);
+		var e = eccentricity;
+		var e2 = e * e;
+		var atanArg1 = -1.0*Math.sqrt(1.0 - e2) * sinF;
+		var atanArg2 = -1.0 * e - cosF;
+		var M = Math.atan2(atanArg1, atanArg2) +
+			Math.PI - e * ((Math.sqrt(1.0 - e2) * sinF) / (1 + e * cosF));
+		return M;
+	},*/
+	
+	calc: function(inp) {
+		var out = {};
+		var v0 = Math.sqrt(inp.mu / inp.r0); // circular orbit vel.
+		var v1 = Math.sqrt(2*inp.mu * (1/inp.r0 - 1/(inp.r0 + inp.r1)));
+		var v1a = Math.sqrt(2*inp.mu * (1/inp.r1 - 1/(inp.r0 + inp.r1)));
+		var dv1 = v1 - v0;
+		var v2 = Math.sqrt(2*inp.mu * (1/inp.r1 - 1/(inp.r1 + inp.r1)));
+		var dv2 = v2 - v1a;
+		out.v1 = v1;
+		out.dv1 = dv1;
+		out.v2 = v2;
+		out.dv2 = dv2;
+		out.deltaV = out.dv1 + out.dv2;
+		out.t1 = Math.PI * Math.sqrt(Math.pow(inp.r0+inp.r1, 3)/(8*inp.mu));
 		return out;
 	}
 };
