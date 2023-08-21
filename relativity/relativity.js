@@ -3,6 +3,27 @@ var g_canvas = null;
 var g_lightspeed_input = null;
 var g_ctx = null;
 
+var g_interval = null;
+var g_anim_param = 0.0;
+const intervalMs = 40;
+
+function start_anim() {
+	if(g_interval) {clearInterval(g_interval); g_interval = null;}
+	g_anim_param = 0.0;
+	
+	g_interval = setInterval(function() {
+		const maxLightspeed = 0.95;
+		let lightspeed = (-1.0 * Math.cos(g_anim_param) + 1) * maxLightspeed * 0.5;
+		update2(g_ctx, lightspeed);
+		g_anim_param += intervalMs * 0.001;
+	}, intervalMs);
+}
+
+function stop_anim() {
+	if(g_interval) {clearInterval(g_interval); g_interval = null;}
+	g_anim_param = 0.0;
+}
+
 function init() {
 	g_lightspeed_input = document.getElementById("lightspeed");
 	
@@ -99,15 +120,18 @@ function drawLine(ctx, x, lightspeed) {
 }
 
 function update() {
+	const lightspeed = parseFloat(g_lightspeed_input.value);
+	let ctx = g_ctx;
+	update2(ctx, lightspeed);
+}
+
+function update2(ctx, lightspeed) {
 	const step = 30;
 	const w = g_canvas.width;
 	const h = g_canvas.height;
-	let ctx = g_ctx;
 	
 	clearCanvas(ctx);
 	drawCross(ctx);
-	
-	const lightspeed = parseFloat(g_lightspeed_input.value);
 	
 	ctx.strokeStyle = "gray";
 	drawGrid(ctx, 0.0);
