@@ -55,15 +55,15 @@ function drawGrid(ctx, lightspeed) {
 	}
 }
 
-function drawLine(ctx, x) {
+function drawLine(ctx, x, lightspeed) {
 	const step = 30;
 	const w = g_canvas.width;
 	const h = g_canvas.height;
 	let middle = [w/2, h/2];
-	for(var y = 0; y < h; y += step*0.1) {
+	for(var y = 0; y < h; y += step*0.25) {
 		const xx = middle[1] + x;
-		let vec = [y - middle[1], xx - middle[0]];
-		let transformed = lorentz_transform_tx(vec, parseFloat(g_lightspeed_input.value));
+		let vec = [middle[1] - y, xx - middle[0]];
+		let transformed = lorentz_transform_tx(vec, lightspeed);
 		put_point(ctx, transformed);
 	}
 }
@@ -85,9 +85,9 @@ function update() {
 	drawGrid(ctx, lightspeed);
 	
 	ctx.strokeStyle = "green";
-	drawLine(ctx, step);
+	drawLine(ctx, step, 0.0);
 	ctx.strokeStyle = "red";
-	drawLine(ctx, step);
+	drawLine(ctx, step, lightspeed);
 	ctx.strokeStyle = "black";
 }
 
@@ -98,7 +98,7 @@ function put_point(ctx, vec) {
 	
 	const size = 3;
 	const x = vec[1] + middle[0];
-	const y = vec[0] * c + middle[1];
+	const y = middle[1] - vec[0] * c;
 	
 	ctx.beginPath();
 	ctx.moveTo(x-size, y-size);
