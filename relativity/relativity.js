@@ -42,13 +42,11 @@ function drawCross(ctx) {
 function drawGrid(ctx, lightspeed) {
 	const w = g_canvas.width;
 	const h = g_canvas.height;
-	const step = 30;
+	const step = 32;
 	
-	let middle = [w/2, h/2];
-	
-	for(var y = 0; y < h; y += step) {
-		for(var x = 0; x < w; x += step) {
-			let vec = [y - middle[1], x - middle[0]];
+	for(var y = -h/2; y < h/2; y += step) {
+		for(var x = -w/2; x < w/2; x += step) {
+			let vec = [x, y];
 			let transformed = lorentz_transform_tx(vec, lightspeed);
 			put_point(ctx, mapToCanvas(transformed));
 		}
@@ -115,12 +113,7 @@ function update() {
 	drawGrid(ctx, 0.0);
 	ctx.strokeStyle = "black";
 	drawGrid(ctx, lightspeed);
-	
-	ctx.strokeStyle = "green";
-	drawLine(ctx, step, 0.0);
-	ctx.strokeStyle = "red";
-	drawLine(ctx, step, lightspeed);
-	ctx.strokeStyle = "black";
+	drawLine(ctx, step * 4, lightspeed);
 }
 
 function put_point(ctx, vec) {	
