@@ -48,11 +48,44 @@ function drawGrid(ctx, lightspeed) {
 	
 	for(var y = 0; y < h; y += step) {
 		for(var x = 0; x < w; x += step) {
-			let vec = [y-middle[1], x - middle[0]];
+			let vec = [y - middle[1], x - middle[0]];
 			let transformed = lorentz_transform_tx(vec, lightspeed);
-			put_point(ctx, transformed);
+			put_point(ctx, mapToCanvas(transformed));
 		}
 	}
+}
+
+function mapToCanvas(vec) {
+	const w = g_canvas.width;
+	const h = g_canvas.height;
+	let middle = [w/2, h/2];
+	const x = vec[1] + middle[0];
+	const y = middle[1] - vec[0];
+	return [x, y];
+}
+
+function mapFromCanvas(vec) {
+	const w = g_canvas.width;
+	const h = g_canvas.height;
+	let middle = [w/2, h/2];
+	return [middle[1] - vec[1], vec[0] - middle[0]];
+}
+
+function drawMappedPoint(ctx, vec, lightspeed0, lightspeed1) {
+	let transformed0 = lorentz_transform_tx(vec, lightspeed0);
+	let transformed1 = lorentz_transform_tx(vec, lightspeed1);
+	let p0 = mapToCanvas(transformed0);
+	let p1 = mapToCanvas(transformed1);
+	ctx.beginPath();
+	ctx.moveTo(p0[0], p0[1]);
+	ctx.lineTo(p1[0], p1[1]);
+	ctx.stroke();
+	
+	ctx.strokeStyle = "green";
+	put_point(ctx, mapToCanvas(transformed0));
+	ctx.strokeStyle = "red";
+	put_point(ctx, mapToCanvas(transformed1));
+	ctx.strokeStyle = "gray";
 }
 
 function drawLine(ctx, x, lightspeed) {
@@ -62,9 +95,8 @@ function drawLine(ctx, x, lightspeed) {
 	let middle = [w/2, h/2];
 	for(var y = 0; y < h; y += step*0.25) {
 		const xx = middle[1] + x;
-		let vec = [middle[1] - y, xx - middle[0]];
-		let transformed = lorentz_transform_tx(vec, lightspeed);
-		put_point(ctx, transformed);
+		let vec = mapFromCanvas([xx, y]);
+		drawMappedPoint(ctx, vec, 0.0, lightspeed);
 	}
 }
 
@@ -91,14 +123,10 @@ function update() {
 	ctx.strokeStyle = "black";
 }
 
-function put_point(ctx, vec) {
-	const w = g_canvas.width;
-	const h = g_canvas.height;
-	let middle = [w/2, h/2];
-	
+function put_point(ctx, vec) {	
 	const size = 3;
-	const x = vec[1] + middle[0];
-	const y = middle[1] - vec[0] * c;
+	const x = vec[0];
+	const y = vec[1];
 	
 	ctx.beginPath();
 	ctx.moveTo(x-size, y-size);
@@ -119,5 +147,6 @@ function lorentz_transform_tx(vec, lightspeed) {
 		gamma * (t - (v * x)/(c*c)), // t'
 		gamma * (x - v * t) // x'
 	];
+	transformed[0] *= c;
 	return transformed;
 }
